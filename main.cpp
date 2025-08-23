@@ -92,6 +92,22 @@ public:
         }
         return items[front];
     }
+
+    // Display all items in shipping queue
+    void displayAll(){
+        if(isEmpty()){
+            cout << "Shipping queue is empty\n";
+            return;
+        }
+    cout << "Items in shipping queue:\n";
+    int i = front;
+    while (true){
+        cout << "- " << items[i] << endl;
+        if (i == rear)
+        break;
+        i = (i+1) % MAX_SIZE;
+    }
+  }
 };
 
 // Array-based Stack Class handling incoming items
@@ -163,9 +179,23 @@ public:
         }
         return items[top];
     }
+    
+    // Display all items in inventory
+    void displayAll(){
+        if(isEmpty()){
+            cout << "Error: No items in inventory to process.\n";
+            return;
+        }
+        cout << "All inventory items:\n";
+        for(int i = top; i >=0; i--)
+        {
+            cout << "- " << items[i] << endl;
+        }
+    }
 };
 
 Queue shippingQueue; // Global shipping queue instance
+Queue shippedItems(100); // To track shipped items
 
 // Main program
 int main()
@@ -181,7 +211,10 @@ int main()
         cout << "3. Ship Item\n";
         cout << "4. View Last Incoming Item\n";
         cout << "5. View Next Shipment\n";
-        cout << "6. Exit\n";
+        cout << "6. Show All Inventory Items\n";
+        cout << "7. Show All Shipping Items\n";
+        cout << "8. Show All Shipped Items\n";
+        cout << "9. Exit\n";
         cout << "Enter your choice: ";
         cin >> choice;
         cin.ignore(); // to clear buffer for getline
@@ -212,6 +245,7 @@ int main()
             if (itemToShip != "")
             {
                 cout << "Shipping item: " << itemToShip << endl;
+                shippedItems.enqueue(itemToShip); // to store shipped history
             }
             else
             {
@@ -243,6 +277,18 @@ int main()
         }
 
         case 6:
+            inventory.displayAll();         // Display all items in inventory
+            break;
+
+        case 7:
+            shippingQueue.displayAll();     // Display all items in shipping queue
+            break; 
+
+        case 8:
+            shippedItems.displayAll();      // Display all completed shipping
+            break;
+
+        case 9:
             cout << "Exiting..." << endl;
             break;
 
@@ -250,7 +296,7 @@ int main()
             cout << "Invalid choice. Try again." << endl;
         }
 
-    } while (choice != 6);
+    } while (choice != 9);
 
     return 0;
 }
