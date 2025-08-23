@@ -1,73 +1,181 @@
 #include <iostream>
 using namespace std;
 
+// Array-based Queue Class for shipping items
+class Queue
+{
+private:
+    int front, rear;
+    int MAX_SIZE;
+    string *items;
+
+public:
+    // Constructor
+    Queue(int size = 100)
+    {
+        MAX_SIZE = size;
+        items = new string[MAX_SIZE];
+        front = -1;
+        rear = -1;
+    }
+
+    // Destructor
+    ~Queue()
+    {
+        delete[] items;
+    }
+
+    // Check if queue is empty
+    bool isEmpty()
+    {
+        return (front == -1 && rear == -1);
+    }
+
+    // Check if queue is full
+    bool isFull()
+    {
+        return ((rear + 1) % MAX_SIZE == front);
+    }
+
+    // Add item to queue (enqueue)
+    void enqueue(string item)
+    {
+        if (isFull())
+        {
+            cout << "Error: Shipping queue is full. Cannot add more items.\n";
+            return;
+        }
+
+        if (isEmpty())
+        {
+            front = 0;
+            rear = 0;
+        }
+        else
+        {
+            rear = (rear + 1) % MAX_SIZE;
+        }
+
+        items[rear] = item;
+    }
+
+    // Remove item from queue (dequeue)
+    string dequeue()
+    {
+        if (isEmpty())
+        {
+            return ""; // Return empty string for empty queue
+        }
+
+        string item = items[front];
+
+        if (front == rear)
+        {
+            // Only one item in queue
+            front = -1;
+            rear = -1;
+        }
+        else
+        {
+            front = (front + 1) % MAX_SIZE;
+        }
+
+        return item;
+    }
+
+    // Peek at front item (next to ship)
+    string peek()
+    {
+        if (isEmpty())
+        {
+            return ""; // Return empty string for empty queue
+        }
+        return items[front];
+    }
+};
+
 // Array-based Stack Class handling incoming items
 
-class Stack{
+class Stack
+{
 private:
     int top;
     int MAX_SIZE;
     string *items;
 
 public:
-   // Constructor
-   Stack(int size = 100) {
-    MAX_SIZE = size;
-    items = new string[MAX_SIZE];
-    top = -1;  // Empty Stack because we start counting from 0 
-   }
-
-   // Destructor
-   ~Stack(){
-    delete[] items;
-   }
-
-   // Check if stack is empty
-   bool isEmpty(){
-    return (top == -1); 
-   }
-
-   // Check if stack is full
-   bool isFull(){
-    return (top == MAX_SIZE - 1);
-   }
-
-   // Push item onto stack
-   void push(string item) {
-    if(isFull()) {
-        cout << "Error: Inventory is full. Cannot add items.\n";
-        return;
+    // Constructor
+    Stack(int size = 100)
+    {
+        MAX_SIZE = size;
+        items = new string[MAX_SIZE];
+        top = -1; // Empty Stack because we start counting from 0
     }
-     items[++top] = item;
-     cout << "Item \"" << item << "\" added to inventory.\n";
-  }
 
-  // Pop item from stack
-  string pop(){
-    if (isEmpty()) {
-        cout << "Error: No items in inventory to process.\n";
-        return "";
+    // Destructor
+    ~Stack()
+    {
+        delete[] items;
     }
-    return items[top--];
-  }
-  
-  // Peek at top item (latest item)
-  string peek() {
-    if(isEmpty()){
-        cout << "No incoming items\n";
-        return "";
+
+    // Check if stack is empty
+    bool isEmpty()
+    {
+        return (top == -1);
     }
-    return items[top];
-  }
+
+    // Check if stack is full
+    bool isFull()
+    {
+        return (top == MAX_SIZE - 1);
+    }
+
+    // Push item onto stack
+    void push(string item)
+    {
+        if (isFull())
+        {
+            cout << "Error: Inventory is full. Cannot add items.\n";
+            return;
+        }
+        items[++top] = item;
+        cout << "Item \"" << item << "\" added to inventory.\n";
+    }
+
+    // Pop item from stack
+    string pop()
+    {
+        if (isEmpty())
+        {
+            cout << "Error: No items in inventory to process.\n";
+            return "";
+        }
+        return items[top--];
+    }
+
+    // Peek at top item (latest item)
+    string peek()
+    {
+        if (isEmpty())
+        {
+            cout << "No incoming items\n";
+            return "";
+        }
+        return items[top];
+    }
 };
 
+Queue shippingQueue; // Global shipping queue instance
+
 // Main program
-int main(){
-    Stack inventory(100);   // stack for incoming items
+int main()
+{
+    Stack inventory(100); // stack for incoming items
     int choice;
     string item;
 
-    do { 
+    do
+    {
         cout << "\n1. Add Incoming Item\n";
         cout << "2. Process Incoming Item\n";
         cout << "3. Ship Item\n";
@@ -78,46 +186,71 @@ int main(){
         cin >> choice;
         cin.ignore(); // to clear buffer for getline
 
-        switch(choice) {
-            case 1:
-              cout << "Enter item name: ";
-              getline(cin, item);
-              inventory.push(item);
-              break;
-             
-             
-            case 2: {
-                // Pop from stack (simulate processing)
-                string processed = inventory.pop();
-                if (processed != "")
-                    cout << "Processed \"" << processed
-                         << "\" and added to shipping queue." << endl;
-                break;
-            }
+        switch (choice)
+        {
+        case 1:
+            cout << "Enter item name: ";
+            getline(cin, item);
+            inventory.push(item);
+            break;
 
-            case 3:
-                cout << "Shipping item: (Queue not implemented yet)" << endl;          // Queue
-                break;
+        case 2:
+        {
+            // Pop from stack (simulate processing)
+            string processed = inventory.pop();
+            if (processed != "")
+                shippingQueue.enqueue(processed); // Add to shipping queue
+            cout << "Processed \"" << processed
+                 << "\" and added to shipping queue." << endl;
 
-            case 4: {
-                string last = inventory.peek();
-                if (last != "")
-                    cout << "Last incoming item: " << last << endl;                   // Peek from stack (check latest item)
-                break;
-            }
-
-            case 5:
-                cout << "Next item to ship: (Queue not implemented yet)" << endl;     // Queue
-                break;
-
-            case 6:
-                cout << "Exiting..." << endl;
-                break;
-
-            default:
-                cout << "Invalid choice. Try again." << endl;  // If exceeds 6 it will show error
+            break;
         }
 
-    }  while (choice != 6); // Repeats menu as long the choice is not 6
-   return 0;
+        case 3:
+        {
+            string itemToShip = shippingQueue.dequeue();
+            if (itemToShip != "")
+            {
+                cout << "Shipping item: " << itemToShip << endl;
+            }
+            else
+            {
+                cout << "No items to ship." << endl;
+            }
+            break;
+        }
+
+        case 4:
+        {
+            string last = inventory.peek();
+            if (last != "")
+                cout << "Last incoming item: " << last << endl;
+            break;
+        }
+
+        case 5:
+        {
+            string next = shippingQueue.peek();
+            if (next != "")
+            {
+                cout << "Next item to ship: " << next << endl;
+            }
+            else
+            {
+                cout << "No items in shipping queue." << endl;
+            }
+            break;
+        }
+
+        case 6:
+            cout << "Exiting..." << endl;
+            break;
+
+        default:
+            cout << "Invalid choice. Try again." << endl;
+        }
+
+    } while (choice != 6);
+
+    return 0;
 }
