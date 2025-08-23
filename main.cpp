@@ -102,7 +102,7 @@ int main(){
             case 4: {
                 string last = inventory.peek();
                 if (last != "")
-                    cout << "Last incoming item: " << last << endl;
+                    cout << "Last incoming item: " << last << endl;                   // Peek from stack (check latest item)
                 break;
             }
 
@@ -115,9 +115,9 @@ int main(){
                 break;
 
             default:
-                cout << "Invalid choice. Try again." << endl;
+                cout << "Invalid choice. Try again." << endl;  // If exceeds 6 it will show error
         }
 
-    }  while (choice != 6);
+    }  while (choice != 6); // Repeats menu as long the choice is not 6
    return 0;
 }
