@@ -60,3 +60,64 @@ public:
     return items[top];
   }
 };
+
+// Main program
+int main(){
+    Stack inventory(100);   // stack for incoming items
+    int choice;
+    string item;
+
+    do { 
+        cout << "\n1. Add Incoming Item\n";
+        cout << "2. Process Incoming Item\n";
+        cout << "3. Ship Item\n";
+        cout << "4. View Last Incoming Item\n";
+        cout << "5. View Next Shipment\n";
+        cout << "6. Exit\n";
+        cout << "Enter your choice: ";
+        cin >> choice;
+        cin.ignore(); // to clear buffer for getline
+
+        switch(choice) {
+            case 1:
+              cout << "Enter item name: ";
+              getline(cin, item);
+              inventory.push(item);
+              break;
+             
+             
+            case 2: {
+                // Pop from stack (simulate processing)
+                string processed = inventory.pop();
+                if (processed != "")
+                    cout << "Processed \"" << processed
+                         << "\" and added to shipping queue." << endl;
+                break;
+            }
+
+            case 3:
+                cout << "Shipping item: (Queue not implemented yet)" << endl;          // Queue
+                break;
+
+            case 4: {
+                string last = inventory.peek();
+                if (last != "")
+                    cout << "Last incoming item: " << last << endl;
+                break;
+            }
+
+            case 5:
+                cout << "Next item to ship: (Queue not implemented yet)" << endl;     // Queue
+                break;
+
+            case 6:
+                cout << "Exiting..." << endl;
+                break;
+
+            default:
+                cout << "Invalid choice. Try again." << endl;
+        }
+
+    }  while (choice != 6);
+   return 0;
+}
