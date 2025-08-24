@@ -1,4 +1,5 @@
 #include <iostream>
+#include <string>
 using namespace std;
 
 // Array-based Queue Class for shipping items
@@ -216,8 +217,13 @@ int main()
         cout << "8. Show All Shipped Items\n";
         cout << "9. Exit\n";
         cout << "Enter your choice: ";
-        cin >> choice;
-        cin.ignore(); // to clear buffer for getline
+        if (!(cin >> choice)) {
+          cin.clear();            // clear error state
+          cin.ignore(1000, '\n'); // removes bad input
+          cout << "Invalid input. Please enter a number between 1 and 9." << endl;
+          continue;               // restart loop
+        }
+        cin.ignore(1000, '\n'); 
 
         switch (choice)
         {
