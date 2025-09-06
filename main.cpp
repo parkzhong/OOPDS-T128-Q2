@@ -113,7 +113,7 @@ public:
   void displayAllWithHeader(const string &header){
         cout << header << endl;
         if(isEmpty()){
-            cout << "Shipping queue is empty\n";
+            cout << "Shipped items is empty\n";
             return;
         }
         int i = front;
