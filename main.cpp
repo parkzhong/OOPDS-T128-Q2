@@ -109,6 +109,20 @@ public:
         i = (i+1) % MAX_SIZE;
     }
   }
+
+  void displayAllWithHeader(const string &header){
+        cout << header << endl;
+        if(isEmpty()){
+            cout << "Shipping queue is empty\n";
+            return;
+        }
+        int i = front;
+        while (true){
+            cout << "- " << items[i] << endl;
+            if (i == rear) break;
+            i = (i+1) % MAX_SIZE;
+        }
+    }
 };
 
 // Array-based Stack Class handling incoming items
@@ -291,7 +305,7 @@ int main()
             break; 
 
         case 8:
-            shippedItems.displayAll();      // Display all completed shipping
+            shippedItems.displayAllWithHeader("Shipped Items: ");      // Display all completed shipping
             break;
 
         case 9:
