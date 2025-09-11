@@ -252,9 +252,11 @@ int main()
             // Pop from stack (simulate processing)
             string processed = inventory.pop();
             if (processed != "")
+            {
                 shippingQueue.enqueue(processed); // Add to shipping queue
             cout << "Processed \"" << processed
                  << "\" and added to shipping queue." << endl;
+            }
 
             break;
         }
